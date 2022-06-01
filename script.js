@@ -1,12 +1,10 @@
 var now = moment();
-var rightNow = now.format("[Today is] dddd, MMM Do, YYYY");
 var hourBlock = [09, 10, 11, 12, 13, 14, 15, 16, 17];
-var schedItem = $("#sched-input").val();
 
 // Displays current day at top of screen
-$("#currentDay").text(rightNow);
+$("#currentDay").text(now.format("[Today is] dddd, MMM Do, YYYY"));
 
-//localstorage for text area input to save the events. events must persist across reloads
+//Gets the initial data in each text area, and sets new data to localStorage
 function scheduler() {
     $(".saveBtn").on("click", function () {
         var text = $(this).siblings(".sched-input").val();
@@ -15,25 +13,36 @@ function scheduler() {
         localStorage.setItem(time, text);
     });
 
-    $("#nine .sched-input").val(localStorage.getItem("nine"));
-    $("#ten .sched-input").val(localStorage.getItem("ten"));
-    $("#eleven .sched-input").val(localStorage.getItem("eleven"));
-    $("#twelve .sched-input").val(localStorage.getItem("twelve"));
-    $("#thirteen .sched-input").val(localStorage.getItem("thirteen"));
-    $("#fourteen .sched-input").val(localStorage.getItem("fourteen"));
-    $("#fifteen .sched-input").val(localStorage.getItem("fifteen"));
-    $("#sixteen .sched-input").val(localStorage.getItem("sixteen"));
-    $("#seventeen .sched-input").val(localStorage.getItem("seventeen"));
+    $("#9 .sched-input").val(localStorage.getItem("9"));
+    $("#10 .sched-input").val(localStorage.getItem("10"));
+    $("#11 .sched-input").val(localStorage.getItem("11"));
+    $("#12 .sched-input").val(localStorage.getItem("12"));
+    $("#13 .sched-input").val(localStorage.getItem("13"));
+    $("#14 .sched-input").val(localStorage.getItem("14"));
+    $("#15 .sched-input").val(localStorage.getItem("15"));
+    $("#16 .sched-input").val(localStorage.getItem("16"));
+    $("#17 .sched-input").val(localStorage.getItem("17"));
 }
 
 //Updates the text area for each block to the appropriate color to denote the passage of time
 function init() {
     for (var i = 0; i < hourBlock.length; i++) {
-        if (parseInt(now.format("HH")) > hourBlock[i]) $(".container").children().children().children().eq([i]).find("textarea").addClass("past");
-        if (parseInt(now.format("HH")) === hourBlock[i]) $(".container").children().children().children().eq([i]).find("textarea").addClass("present");
-        if (parseInt(now.format("HH")) < hourBlock[i]) $(".container").children().children().children().eq([i]).find("textarea").addClass("future");
+        if (parseInt(now.format("HH")) > hourBlock[i]) {
+            $(".sched-input").addClass("past");
+            $(".sched-input").removeClass("present");
+            $(".sched-input").removeClass("future");
+        } else if (parseInt(now.format("HH")) === hourBlock[i]) {
+            $(".sched-input").removeClass("past");
+            $(".sched-input").addClass("present");
+            $(".sched-input").removeClass("future");
+        } else if (parseInt(now.format("HH")) < hourBlock[i]) {
+            $(".sched-input").removeClass("past");
+            $(".sched-input").removeClass("present");
+            $(".sched-input").addClass("future");
+        }
     }
     scheduler();
 }
 
+//Runs the whole thing
 init();
