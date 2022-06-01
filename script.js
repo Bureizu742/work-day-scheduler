@@ -1,5 +1,4 @@
 var now = moment();
-var hourBlock = [09, 10, 11, 12, 13, 14, 15, 16, 17];
 
 // Displays current day at top of screen
 $("#currentDay").text(now.format("[Today is] dddd, MMM Do, YYYY"));
@@ -26,6 +25,7 @@ function scheduler() {
 
 //Updates the text area for each block to the appropriate color to denote the passage of time
 function init() {
+    var hourBlock = [09, 10, 11, 12, 13, 14, 15, 16, 17];
     for (var i = 0; i < hourBlock.length; i++) {
         if (parseInt(now.format("HH")) > hourBlock[i]) {
             $(".sched-input").addClass("past");
@@ -35,7 +35,7 @@ function init() {
             $(".sched-input").removeClass("past");
             $(".sched-input").addClass("present");
             $(".sched-input").removeClass("future");
-        } else if (parseInt(now.format("HH")) < hourBlock[i]) {
+        } else if (parseInt(now.format("HH")) > hourBlock[i]) {
             $(".sched-input").removeClass("past");
             $(".sched-input").removeClass("present");
             $(".sched-input").addClass("future");
